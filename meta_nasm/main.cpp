@@ -1,17 +1,12 @@
-#include "meta_codegen.hpp"
 #include <fstream>
-
-using Expr = Add<Number<3>, Number<7>>;
-
-// compile-time nasm assembly
-constexpr auto code = generate_nasm<Expr>();
+#include "meta_codegen.hpp"
+#include "../bridge/generated_meta_ast.hpp"
 
 int main() {
-    std::ofstream out("nasm_output.asm");
+    auto code = generate_nasm<GeneratedExpr>();
 
-    for(auto c : code) {
-        out << c;
-    }
+    std::ofstream out("nasm_output.asm");
+    for (auto c : code) out << c;
 
     return 0;
 }
