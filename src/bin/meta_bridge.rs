@@ -3,11 +3,14 @@ use mojo_like_rust::IR;
 fn ir_to_cpp(ir: &IR) -> String {
     match ir {
         IR::Num(n) => format!("Number<{}>", n),
+
         IR::Add(a, b) => format!("Add<{}, {}>", ir_to_cpp(a), ir_to_cpp(b)),
         IR::Sub(a, b) => format!("Sub<{}, {}>", ir_to_cpp(a), ir_to_cpp(b)),
         IR::Mul(a, b) => format!("Mul<{}, {}>", ir_to_cpp(a), ir_to_cpp(b)),
         IR::Div(a, b) => format!("Div<{}, {}>", ir_to_cpp(a), ir_to_cpp(b)),
-        IR::Return(e) => format!("Return<{}>", ir_to_cpp(e)),
+
+        IR::Return(expr) => format!("Return<{}>", ir_to_cpp(expr)),
+
         IR::Block(list) => {
             let inner = list
                 .iter()
@@ -16,7 +19,8 @@ fn ir_to_cpp(ir: &IR) -> String {
                 .join(", ");
             format!("Block<{}>", inner)
         }
-        _ => unimplemented!("IR variant not implemented in meta bridge"),
+
+        _ => unimplemented!("IR variant not implemented in meta bridge backend"),
     }
 }
 
